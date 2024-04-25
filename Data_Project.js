@@ -1,5 +1,7 @@
 let img;
 let input;
+let imagine;
+let res = 15;
 
 function preload(){
   input = createFileInput(handleImage);
@@ -9,8 +11,8 @@ function preload(){
 function handleImage(file){
   if(file.type === 'image'){
     img = createImg(file.data, '');
-    img.crossOrigin = "Anonymous";
     img.hide();
+    imagine = loadImage(file.data);
     input.remove();
   }
   else{
@@ -40,7 +42,9 @@ function draw() {
   background(151);
   if(img){
     image(img, 0, 0, width, height);
-    //loadPixels();
+    imagine.loadPixels();
+
+    noStroke();
     // basic for loop structure and pixel accessing code from: https://idmnyu.github.io/p5.js-image/
     for(var y = 0; y < height; y++){
       for(var x = 0; x < width; x++){
@@ -59,6 +63,8 @@ function draw() {
     }
     // update pixels with their new values
   }
-  //updatePixels();
+  if(imagine){
+    imagine.updatePixels();
+  }
 
 }
