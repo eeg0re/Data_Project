@@ -2,6 +2,7 @@ let img;
 let input;
 let imagine;
 let res = 30;
+let colors;
 
 function preload(){
   input = createFileInput(handleImage);
@@ -22,6 +23,8 @@ function handleImage(file){
 }
 
 function setup() {
+  colors = [[50, 94, 168], [115, 163, 245], [162, 185, 224], [30, 59, 107], [4, 20, 46], [0, 0, 0]];
+
   if(img){
     createCanvas(img.width, img.height);
   }
@@ -37,9 +40,24 @@ function fix_canvas(){
   }
 }
 
+function closestColor(r, g, b){
+  let index;
+  let cor = createVector(r, g, b);
+  let minDist;
+  for(let i = 0; i < colors.length; i++){
+    let azul = createVector(...colors[i]);
+    let distance = cor.dist(azul);
+    if(!minDist || distance < minDist){
+      index = i;
+      minDist = distance;
+    }
+  }
+
+  return index;
+}
+
 
 function draw() {
-  background(151);
   if(img){
     image(img, 0, 0, width, height);
     imagine.loadPixels();
@@ -49,18 +67,15 @@ function draw() {
     for(var y = 0; y < height; y+= res){
       for(var x = 0; x < width; x+= res){
         var index = (x + y * width) * 4;
-        let c = imagine.get(x, y);
-        fill(c);
+        // let c = imagine.get(x, y);
+
+        let closestIDX = closestColor(pixels[index], pixels[index+1], pixels[index+3]);
+        fill(...colors[closestIDX]);
+
         rect(x,y, res, res);
-        /*
-        pixels[index+0] =                   // red
-        pixels[index+1] =                   // green 
-        pixels[index+2] =                   // blue
-        pixels[index+3] = 255;              // alpha
-        */
-        // pixels[index+0] = x;                  // red
-        // pixels[index+1] = random(0,255);                  // green 
-        // pixels[index+2] = y;                 // blue
+        // pixels[index]   = colors[closestIDX][0];                  // red
+        // pixels[index+1] = colors[closestIDX][1];                  // green 
+        // pixels[index+2] = colors[closestIDX][2];                  // blue
         // pixels[index+3] = 255;              // alpha
       }
     }
