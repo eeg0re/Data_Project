@@ -1,7 +1,7 @@
 let img;
 let input;
 let imagine;
-let res = 15;
+let res = 30;
 
 function preload(){
   input = createFileInput(handleImage);
@@ -46,9 +46,12 @@ function draw() {
 
     noStroke();
     // basic for loop structure and pixel accessing code from: https://idmnyu.github.io/p5.js-image/
-    for(var y = 0; y < height; y++){
-      for(var x = 0; x < width; x++){
+    for(var y = 0; y < height; y+= res){
+      for(var x = 0; x < width; x+= res){
         var index = (x + y * width) * 4;
+        let c = imagine.get(x, y);
+        fill(c);
+        rect(x,y, res, res);
         /*
         pixels[index+0] =                   // red
         pixels[index+1] =                   // green 
